@@ -311,7 +311,7 @@ def removewhitelist(bot: Bot, update: Update, args: List[str]) -> str:
 @run_async
 @whitelist_plus
 def whitelistlist(bot: Bot, update: Update):
-    reply = "<b>Whitelist user🤍:</b>\n"
+    reply = "<b>Whitelist User🤍:</b>\n"
     for each_user in WHITELIST_USERS:
         user_id = int(each_user)
         try:
@@ -341,7 +341,7 @@ def supportlist(bot: Bot, update: Update):
 @whitelist_plus
 def sudolist(bot: Bot, update: Update):
     true_sudo = list(set(SUDO_USERS) - set(DEV_USERS))
-    reply = "<b>Sudo list❤:</b>\n"
+    reply = "<b>Sudo List❤:</b>\n"
     for each_user in true_sudo:
         user_id = int(each_user)
         try:
@@ -356,7 +356,7 @@ def sudolist(bot: Bot, update: Update):
 @whitelist_plus
 def devlist(bot: Bot, update: Update):
     true_dev = list(set(DEV_USERS) - {OWNER_ID})
-    reply = "<b>My developer list🤎:</b>\n"
+    reply = "<b>My Developer List🤎:</b>\n"
     for each_user in true_dev:
         user_id = int(each_user)
         try:
@@ -368,7 +368,7 @@ def devlist(bot: Bot, update: Update):
 
 
 __help__ = """
-*Bot owner only:*
+*Bot Owner only:*
 
  • /addsudo: promotes the user to Sudo User
  • /removesudo: demotes the user from Sudo User
@@ -410,7 +410,7 @@ dispatcher.add_handler(SUPPORTLIST_HANDLER)
 dispatcher.add_handler(SUDOLIST_HANDLER)
 dispatcher.add_handler(DEVLIST_HANDLER)
 
-__mod_name__ = "Admin Access♿"
+__mod_name__ = "Admin"
 __handlers__ = [SUDO_HANDLER, SUPPORT_HANDLER, WHITELIST_HANDLER,
                 UNSUDO_HANDLER, UNSUPPORT_HANDLER, UNWHITELIST_HANDLER,
                 WHITELISTLIST_HANDLER, SUPPORTLIST_HANDLER, SUDOLIST_HANDLER, DEVLIST_HANDLER]
