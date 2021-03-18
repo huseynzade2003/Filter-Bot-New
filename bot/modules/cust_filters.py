@@ -190,7 +190,7 @@ def stop_filter(bot: Bot, update: Update):
     chat_filters = sql.get_chat_triggers(chat_id)
 
     if not chat_filters:
-        update.effective_message.reply_text("No filters are active here!")
+        update.effective_message.reply_text("No Filters Are Active Here!")
         return
 
     for keyword in chat_filters:
@@ -199,7 +199,7 @@ def stop_filter(bot: Bot, update: Update):
             update.effective_message.reply_text("_Filter Deleted Successfully_ *{}*.".format(chat_name), parse_mode=telegram.ParseMode.MARKDOWN)
             raise DispatcherHandlerStop
 
-    update.effective_message.reply_text("Your Filter Keyword is Incorrect please check Your Keyword /filters")
+    update.effective_message.reply_text("Your Filter Keyword is Incorrect Please Check Your Keyword /filters")
 
 
 @run_async
@@ -254,14 +254,14 @@ def reply_filter(bot: Bot, update: Update):
                     if excp.message == "Unsupported url protocol":
                         message.reply_text("You seem to be trying to use an unsupported url protocol. Telegram "
                                            "doesn't support buttons for some protocols, such as tg://. Please try "
-                                           "again, or ask in @D_ar_k_Angel for help.")
+                                           "again, or ask in @I_Am_Only_One_1 for help.")
                     elif excp.message == "Reply message not found":
                         bot.send_message(chat.id, filt.reply, parse_mode=ParseMode.MARKDOWN,
                                          disable_web_page_preview=True,
                                          reply_markup=keyboard)
                     else:
                         message.reply_text("This note could not be sent, as it is incorrectly formatted. Ask in "
-                                           "@D_ar_k_Angel if you can't figure out why!")
+                                           "@I_Am_Only_One_1 if you can't figure out why!")
                         LOGGER.warning("Message %s could not be parsed", str(filt.reply))
                         LOGGER.exception("Could not parse filter %s in chat %s", str(filt.keyword), str(chat.id))
 
@@ -330,7 +330,7 @@ doin?
 
 """
 
-__mod_name__ = "FILTERS 📜"
+__mod_name__ = "Filter"
 
 FILTER_HANDLER = CommandHandler("filter", filters)
 STOP_HANDLER = CommandHandler("stop", stop_filter)
