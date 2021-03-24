@@ -1,4 +1,3 @@
-
 import html
 import json
 import os
@@ -38,27 +37,27 @@ def info(bot: Bot, update: Update, args: List[str]):
     elif not message.reply_to_message and (not args or (
             len(args) >= 1 and not args[0].startswith("@") and not args[0].isdigit() and not message.parse_entities(
         [MessageEntity.TEXT_MENTION]))):
-        message.reply_text("I can't extract a user from this.")
+        message.reply_text("Bir istifadəçini bundan çıxara bilmirəm.")
         return
 
     else:
         return
     
-    text = (f"<b>User Information:</b>\n"
+    text = (f"<b>🔎İstifadəçi məlumatları🔍:</b>\n"
             f"🆔: <code>{user.id}</code>\n"
-            f"👤Name: {html.escape(user.first_name)}")
+            f"👤Ad: {html.escape(user.first_name)}")
 
     if user.last_name:
-        text += f"\n🚹Last Name: {html.escape(user.last_name)}"
+        text += f"\n🚹Soyad: {html.escape(user.last_name)}"
 
     if user.username:
-        text += f"\n♻️Username: @{html.escape(user.username)}"
+        text += f"\n♻️İstifadəçi adı: @{html.escape(user.username)}"
 
-    text += f"\n☣️Permanent User Link: {mention_html(user.id, 'link🚪')}"
+    text += f"\n☣️Daimi İstifadəçi Linki: {mention_html(user.id, 'link🚪')}"
 
     num_chats = sql.get_user_num_chats(user.id)
-    text += f"\n🌐Chat Count: <code>{num_chats}</code>"
-    text += "\n🎭Number of Profile Pics: {}".format(bot.get_user_profile_photos(user.id).total_count)
+    text += f"\n🌐Qrup Sayı: <code>{num_chats}</code>"
+    text += "\n🎭Profil şəkillərinin sayı: {}".format(bot.get_user_profile_photos(user.id).total_count)
    
     try:
         user_member = chat.get_member(user.id)
@@ -67,36 +66,36 @@ def info(bot: Bot, update: Update, args: List[str]):
             result = result.json()["result"]
             if "custom_title" in result.keys():
                 custom_title = result['custom_title']
-                text += f"\n🛡This User Holds The Title⚜️ <b>{custom_title}</b> Here!"
+                text += f"\n🛡Bu istifadəçi başlığı saxlayır⚜️<b>{custom_title}</b>Burada!"
     except BadRequest:
         pass
 
    
 
     if user.id == OWNER_ID:
-        text += "\n🚶🏻‍♂️Uff,This Person is My Owner🤴\nI would never do anything against him!."
+        text += "\n🚶🏻‍♂️Uff, Bu Şəxs Mənim Sahibimdir🤴\nHeç vaxt ona qarşı bir şey etməzdim!."
         
     elif user.id in DEV_USERS:
-        text += "\n🚴‍♂️Pling,This Person is My Dev🤷‍♂️\nI would never do anything against him!."
+        text += "\n🚴‍♂️Pling, Bu Şəxs Mənim Devimdir🤷️\nHeç vaxt ona qarşı bir şey etmərəm!."
         
-    elif user.id == 1118936839:
-        text += "\n🚴‍♂️Pling,This Person is My Creator/Developer🤷‍♂️\nI would never do anything against him!."     
+    elif user.id == 1081850094:
+        text += "\n🚴‍♂️Pling, Bu Şəxs Mənim Yaradanım/Qurucumdur🤷‍♂️\nHeç vaxt ona qarşı bir şey etmərəm!."     
         
     elif user.id in SUDO_USERS:
-        text += "\n🚴‍♂️Pling,This person is one of my sudo users! " \
-                    "Nearly as powerful as my owner🕊so watch it.."
+        text += "\n🚴‍♂️Pling, Bu şəxs mənim sudo istifadəçilərimdən biridir! " \
+                    "Sahibim qədər güclüdür, buna görə də baxın.."
         
     elif user.id in SUPPORT_USERS:
-        text += "\n🚴‍♂️Pling,This person is one of my support users! " \
-                        "Not quite a sudo user, but can still gban you off the map."
+        text += "\n🚴‍♂️Pling, Bu şəxs mənim dəstək istifadəçilərimdən biridir!" \
+                        "Çox sudo istifadəçisi deyil, ancaq yenə də sizi məsələdən kənarda saxlaya bilər."
         
   
        
     elif user.id in WHITELIST_USERS:
-        text += "\n🚴‍♂️Pling,This person has been whitelisted! " \
-                        "That means I'm not allowed to ban/kick them."
+        text += "\n🚴‍♂️Pling, Bu şəxs ağ siyahıya alındı!" \
+                        "Bu o deməkdir ki, onları ban etməyim/qovmağım qadağandır."
     elif user.id == bot.id:     
-        text += "\n💃Lol🧞‍♂️It's Me!!😉"
+        text += "\n🧞Lol🧞‍♂️Bu Mənəm !! 😉"
 
 
     text +="\n"
