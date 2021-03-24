@@ -215,7 +215,7 @@ if is_module_loaded(FILENAME):
 
             if enabled_cmds:
                 enabled_cmds_string = ", ".join(enabled_cmds)
-                update.effective_message.reply_text(f"'{Enabled_cmds_string}' istifadəsini aktivləşdirdi",
+                update.effective_message.reply_text(f"'{enabled_cmds_string}' istifadəsini aktivləşdirdi",
                                                     parse_mode=ParseMode.MARKDOWN)
 
             if failed_enabled_cmds:
