@@ -18,18 +18,18 @@ def shell(command):
 def shellExecute(bot: Bot, update: Update):
     cmd = update.message.text.split(' ',maxsplit=1)
     if len(cmd) == 1:
-        sendMessage("No command provided!", bot, update)
+        sendMessage("Heç bir əmr verilməyib!", bot, update)
         return
     LOGGER.info(cmd)
     output = shell(cmd[1])
     if output[1].decode():
-        LOGGER.error(f"Shell: {output[1].decode()}")
+        LOGGER.error(f"Qabıq: {output[1].decode()}")
     if len(output[0].decode()) > 4000:
-        with open("shell.txt",'w') as f:
-            f.write(f"Output\n-----------\n{output[0].decode()}\n")
+        with open("qabıq.txt",'w') as f:
+            f.write(f"Çıxış\n-----------\n{output[0].decode()}\n")
             if output[1]:
-                f.write(f"STDError\n-----------\n{output[1].decode()}\n")
-        with open("shell.txt",'rb') as f:
+                f.write(f"STDXəta\n-----------\n{output[1].decode()}\n")
+        with open("qabıq.txt",'rb') as f:
             bot.send_document(document=f, filename=f.name,
                                   reply_to_message_id=update.message.message_id,
                                   chat_id=update.message.chat_id)  
