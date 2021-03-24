@@ -26,7 +26,7 @@ if is_module_loaded(FILENAME):
 
             if result:
                 datetime_fmt = "%H:%M - %d-%m-%Y"
-                result += f"\n<b>Event Stamp</b>: <code>{datetime.utcnow().strftime(datetime_fmt)}</code>"
+                result += f"\n<b>Tədbir damğası</b>: <code>{datetime.utcnow().strftime(datetime_fmt)}</code>"
 
                 if message.chat.type == chat.SUPERGROUP and message.chat.username:
                     result += f'\n<b>Link:</b> <a href="https://t.me/{chat.username}/{message.message_id}">click here</a>'
@@ -36,7 +36,7 @@ if is_module_loaded(FILENAME):
             elif result == "":
                 pass
             else:
-                LOGGER.warning("%s was set as loggable, but had no return statement.", func)
+                LOGGER.warning("%s loggable olaraq təyin olundu, lakin dönüş ifadəsi yox idi.", func)
 
             return result
 
@@ -53,7 +53,7 @@ if is_module_loaded(FILENAME):
 
             if result:
                 datetime_fmt = "%H:%M - %d-%m-%Y"
-                result += "\n<b>Event Stamp</b>: <code>{}</code>".format(datetime.utcnow().strftime(datetime_fmt))
+                result += "\n<b>Tədbir damğası</b>: <code>{}</code>".format(datetime.utcnow().strftime(datetime_fmt))
 
                 if message.chat.type == chat.SUPERGROUP and message.chat.username:
                     result += f'\n<b>Link:</b> <a href="https://t.me/{chat.username}/{message.message_id}">click here</a>'
@@ -63,7 +63,7 @@ if is_module_loaded(FILENAME):
             elif result == "":
                 pass
             else:
-                LOGGER.warning("%s was set as loggable to gbanlogs, but had no return statement.", func)
+                LOGGER.warning("%s gbanlogs üçün qeyd edilə bilən olaraq təyin edildi, lakin heç bir dönüş ifadəsi yox idi.", func)
 
             return result
 
@@ -76,14 +76,14 @@ if is_module_loaded(FILENAME):
             bot.send_message(log_chat_id, result, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
         except BadRequest as excp:
             if excp.message == "Chat not found":
-                bot.send_message(orig_chat_id, "This log channel has been deleted - unsetting.")
+                bot.send_message(orig_chat_id, "Bu Log kanal silindi - ayarlanmadı.")
                 sql.stop_chat_logging(orig_chat_id)
             else:
                 LOGGER.warning(excp.message)
                 LOGGER.warning(result)
-                LOGGER.exception("Could not parse")
+                LOGGER.exception("Təhlil edilə bilmədi")
 
-                bot.send_message(log_chat_id, result + "\n\nFormatting has been disabled due to an unexpected error.")
+                bot.send_message(log_chat_id, result + "\n\nFormatlaşdırma gözlənilməz bir səhv səbəbindən deaktiv edildi.")
 
 
     @run_async
@@ -96,12 +96,12 @@ if is_module_loaded(FILENAME):
         log_channel = sql.get_chat_log_channel(chat.id)
         if log_channel:
             log_channel_info = bot.get_chat(log_channel)
-            message.reply_text(f"This group has all it's logs sent to:"
+            message.reply_text(f"Bu qrupda göndərilən bütün qeydlər var:"
                                f" {escape_markdown(log_channel_info.title)} (`{log_channel}`)",
                                parse_mode=ParseMode.MARKDOWN)
 
         else:
-            message.reply_text("No log channel has been set for this group!")
+            message.reply_text("Bu qrup üçün giriş kanalı təyin edilməyib!")
 
 
     @run_async
@@ -111,34 +111,34 @@ if is_module_loaded(FILENAME):
         message = update.effective_message
         chat = update.effective_chat
         if chat.type == chat.CHANNEL:
-            message.reply_text("Now, forward the /setlog to the group you want to tie this channel to!")
+            message.reply_text("İndi / setloqu bu kanalı bağlamaq istədiyiniz qrupa yönəldin!")
 
         elif message.forward_from_chat:
             sql.set_chat_log_channel(chat.id, message.forward_from_chat.id)
             try:
                 message.delete()
             except BadRequest as excp:
-                if excp.message == "Message to delete not found":
+                if excp.message == "Silmək üçün mesaj tapılmadı":
                     pass
                 else:
-                    LOGGER.exception("Error deleting message in log channel. Should work anyway though.")
+                    LOGGER.exception("Giriş kanalındakı mesaj silinərkən xəta baş verdi. Hər halda işləməli.")
 
             try:
                 bot.send_message(message.forward_from_chat.id,
-                                 f"This channel has been set as the log channel for {chat.title or chat.first_name}.")
+                                 f"Bu kanal {chat.title or chat.first_name} üçün log kanalı olaraq təyin edilmişdir.")
             except Unauthorized as excp:
-                if excp.message == "Forbidden: bot is not a member of the channel chat":
-                    bot.send_message(chat.id, "Successfully set log channel!")
+                if excp.message == "Qadağandır: bot kanal söhbətinin üzvü deyil":
+                    bot.send_message(chat.id, "Giriş kanalı uğurla quruldu!")
                 else:
-                    LOGGER.exception("ERROR in setting the log channel.")
+                    LOGGER.exception("Giriş kanalını qurarkən XƏTA.")
 
-            bot.send_message(chat.id, "Successfully set log channel!")
+            bot.send_message(chat.id, "Giriş kanalı uğurla quruldu!")
 
         else:
-            message.reply_text("The steps to set a log channel are:\n"
-                               " - add bot to the desired channel\n"
-                               " - send /setlog to the channel\n"
-                               " - forward the /setlog to the group\n")
+            message.reply_text("Bir LOG kanalı qurmaq üçün addımlar:\n"
+                               " - istənilən kanala botu əlavə edin\n"
+                               " - /setlog kanala göndərin\n"
+                               " - /setlog-u qrupa yönləndirin\n")
 
 
     @run_async
@@ -150,11 +150,11 @@ if is_module_loaded(FILENAME):
 
         log_channel = sql.stop_chat_logging(chat.id)
         if log_channel:
-            bot.send_message(log_channel, f"Channel has been unlinked from {chat.title}")
-            message.reply_text("Log channel has been un-set.")
+            bot.send_message(log_channel, f"Kanal əlaqəsi kəsildi {chat.title}")
+            message.reply_text("Log kanalı ayarlanmamışdır.")
 
         else:
-            message.reply_text("No log channel has been set yet!")
+            message.reply_text("Hələ log kanalı qurulmayıb!")
 
 
     def __stats__():
@@ -169,21 +169,21 @@ if is_module_loaded(FILENAME):
         log_channel = sql.get_chat_log_channel(chat_id)
         if log_channel:
             log_channel_info = dispatcher.bot.get_chat(log_channel)
-            return f"This group has all it's logs sent to: {escape_markdown(log_channel_info.title)} (`{log_channel}`)"
-        return "No log channel is set for this group!"
+            return f"Bu qrupda göndərilən bütün qeydlər var: {escape_markdown(log_channel_info.title)} (`{log_channel}`)"
+        return "Bu qrup üçün giriş kanalı təyin edilməyib!"
 
 
     __help__ = """
     *Admin only:*
-    • /logchannel: get log channel info
-    • /setlog: set the log channel.
-    • /unsetlog: unset the log channel.
-    *Setting the log channel is done by:*
-    • adding the bot to the desired channel (as an admin!)
-    • sending /setlog in the channel
-    • forwarding the /setlog to the group
+    • /logchannel: log kanalı məlumatlarını əldə edin
+    • /setlog: log kanalını qurun.
+    • /unsetlog: log kanalını sıfırlayın.
+    *LOG kanalının qurulması:*
+    • botu istədiyiniz kanala əlavə etmək (admin olaraq!)
+    • Kanalda göndərmə /setlog
+    • /setlog qrupa yönləndirmək
     """ 
-    __mod_name__ = "Logs"
+    __mod_name__ = "Loglar"
   
     LOG_HANDLER = CommandHandler("logchannel", logging)
     SET_LOG_HANDLER = CommandHandler("setlog", setlog)
