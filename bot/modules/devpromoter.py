@@ -18,10 +18,10 @@ ELEVATED_USERS_FILE = os.path.join(os.getcwd(), 'bot/elevated_users.json')
 
 def check_user_id(user_id: int, bot: Bot) -> Optional[str]:
     if not user_id:
-        reply = "That...is a chat!"
+        reply = "Bu ... söhbətdir!"
 
     elif user_id == bot.id:
-        reply = "This does not work that way."
+        reply = "Bu o şəkildə işləmir."
 
     else:
         reply = None
@@ -49,16 +49,16 @@ def addsudo(bot: Bot, update: Update, args: List[str]) -> str:
         data = json.load(infile)
 
     if user_id in SUDO_USERS:
-        message.reply_text("This member is already my SUDO.")
+        message.reply_text("Bu üzv onsuz da mənim SUDO-mdur.")
         return ""
 
     if user_id in SUPPORT_USERS:
-        rt += "This user is already a SUPPORT USER."
+        rt += "Bu istifadəçi artıq bir DƏSTƏK İSTİFADƏÇİSİDİR."
         data['supports'].remove(user_id)
         SUPPORT_USERS.remove(user_id)
 
     if user_id in WHITELIST_USERS:
-        rt += "This user is already a WHITELIST USER."
+        rt += "Bu istifadəçi artıq WHITELIST istifadəçisidir."
         data['whitelists'].remove(user_id)
         WHITELIST_USERS.remove(user_id)
 
@@ -69,11 +69,11 @@ def addsudo(bot: Bot, update: Update, args: List[str]) -> str:
         json.dump(data, outfile, indent=4)
 
     update.effective_message.reply_text(
-        rt + "\nSuccessfully added this user {} to Sudo!".format(user_member.first_name))
+        rt + "\nBu istifadəçi {} Sudo-ya uğurla əlavə edildi!".format(user_member.first_name))
 
     log_message = (f"#SUDO\n"
                    f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                   f"<b>User:</b> {mention_html(user_member.id, user_member.first_name)}")
+                   f"<b>İstifadəçi:</b> {mention_html(user_member.id, user_member.first_name)}")
 
     if chat.type != 'private':
         log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -102,16 +102,16 @@ def addsupport(bot: Bot, update: Update, args: List[str]) -> str:
         data = json.load(infile)
 
     if user_id in SUDO_USERS:
-        rt += "Demoting status of this SUDO to SUPPORT"
+        rt += "Bu SUDO-nun DƏSTƏK statusunu aşağı salma"
         data['sudos'].remove(user_id)
         SUDO_USERS.remove(user_id)
 
     if user_id in SUPPORT_USERS:
-        message.reply_text("This user is already a SUDO.")
+        message.reply_text("Bu istifadəçi artıq SUDO-dur.")
         return ""
 
     if user_id in WHITELIST_USERS:
-        rt += "Promoting Disaster level from WHITELIST USER to SUPPORT USER"
+        rt += "WHITELIST İSTİFADƏÇİSİNDƏN KULLANICI DƏSTƏK EDƏCƏK Fəlakət səviyyəsinin yüksəldilməsi"
         data['whitelists'].remove(user_id)
         WHITELIST_USERS.remove(user_id)
 
@@ -121,11 +121,11 @@ def addsupport(bot: Bot, update: Update, args: List[str]) -> str:
     with open(ELEVATED_USERS_FILE, 'w') as outfile:
         json.dump(data, outfile, indent=4)
 
-    update.effective_message.reply_text(rt + f"\n{user_member.first_name} was added as a Support User!")
+    update.effective_message.reply_text(rt + f"\n{user_member.first_name} bir dəstək istifadəçisi olaraq əlavə edildi!")
 
     log_message = (f"#SUPPORT\n"
                    f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                   f"<b>User:</b> {mention_html(user_member.id, user_member.first_name)}")
+                   f"<b>İstifadəçi:</b> {mention_html(user_member.id, user_member.first_name)}")
 
     if chat.type != 'private':
         log_message = "<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -154,17 +154,17 @@ def addwhitelist(bot: Bot, update: Update, args: List[str]) -> str:
         data = json.load(infile)
 
     if user_id in SUDO_USERS:
-        rt += "This member is a SUDO, Demoting to SUDO."
+        rt += "Bu üzv bir SUDO-dur, SUDO-ya enir."
         data['sudos'].remove(user_id)
         SUDO_USERS.remove(user_id)
 
     if user_id in SUPPORT_USERS:
-        rt += "This user is already a SUPPORT, Demoting to SUPPORT"
+        rt += "Bu istifadəçi artıq bir SUPPORTDUR, DƏSTƏK üçün aşağı"
         data['supports'].remove(user_id)
         SUPPORT_USERS.remove(user_id)
 
     if user_id in WHITELIST_USERS:
-        message.reply_text("This user is already a WHITELIST USER.")
+        message.reply_text("Bu istifadəçi artıq WHITELIST istifadəçisidir.")
         return ""
 
     data['whitelists'].append(user_id)
@@ -174,11 +174,11 @@ def addwhitelist(bot: Bot, update: Update, args: List[str]) -> str:
         json.dump(data, outfile, indent=4)
 
     update.effective_message.reply_text(
-        rt + f"\nSuccessfully promoted {user_member.first_name} to a Whitelist User!")
+        rt + f"\n{user_member.first_name} uğurlu bir Siyahı İstifadəçisinə təqdim edildi!")
 
     log_message = (f"#WHITELIST\n"
                    f"<b>Admin:</b> {mention_html(user.id, user.first_name)} \n"
-                   f"<b>User:</b> {mention_html(user_member.id, user_member.first_name)}")
+                   f"<b>İstifadəçi:</b> {mention_html(user_member.id, user_member.first_name)}")
 
     if chat.type != 'private':
         log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -206,7 +206,7 @@ def removesudo(bot: Bot, update: Update, args: List[str]) -> str:
         data = json.load(infile)
 
     if user_id in SUDO_USERS:
-        message.reply_text("Demoting to normal user")
+        message.reply_text("Normal istifadəçiyə endirmə")
         SUDO_USERS.remove(user_id)
         data['sudos'].remove(user_id)
 
@@ -215,7 +215,7 @@ def removesudo(bot: Bot, update: Update, args: List[str]) -> str:
 
         log_message = (f"#UNSUDO\n"
                        f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                       f"<b>User:</b> {mention_html(user_member.id, user_member.first_name)}")
+                       f"<b>İstifadəçi:</b> {mention_html(user_member.id, user_member.first_name)}")
 
         if chat.type != 'private':
             log_message = "<b>{}:</b>\n".format(html.escape(chat.title)) + log_message
@@ -223,7 +223,7 @@ def removesudo(bot: Bot, update: Update, args: List[str]) -> str:
         return log_message
 
     else:
-        message.reply_text("This user is not a sudo!")
+        message.reply_text("Bu istifadəçi sudo deyil!")
         return ""
 
 
@@ -256,7 +256,7 @@ def removesupport(bot: Bot, update: Update, args: List[str]) -> str:
 
         log_message = (f"#UNSUPPORT\n"
                        f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                       f"<b>User:</b> {mention_html(user_member.id, user_member.first_name)}")
+                       f"<b>İstifadəçi:</b> {mention_html(user_member.id, user_member.first_name)}")
 
         if chat.type != 'private':
             log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -264,7 +264,7 @@ def removesupport(bot: Bot, update: Update, args: List[str]) -> str:
         return log_message
 
     else:
-        message.reply_text("This user is not a support!")
+        message.reply_text("Bu istifadəçi support deyil!")
         return ""
 
 
@@ -288,7 +288,7 @@ def removewhitelist(bot: Bot, update: Update, args: List[str]) -> str:
         data = json.load(infile)
 
     if user_id in WHITELIST_USERS:
-        message.reply_text("Demoting to normal user")
+        message.reply_text("Normal istifadəçiyə endirmə")
         WHITELIST_USERS.remove(user_id)
         data['whitelists'].remove(user_id)
 
@@ -297,21 +297,21 @@ def removewhitelist(bot: Bot, update: Update, args: List[str]) -> str:
 
         log_message = (f"#UNWHITELIST\n"
                        f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                       f"<b>User:</b> {mention_html(user_member.id, user_member.first_name)}")
+                       f"<b>İstifadəçi:</b> {mention_html(user_member.id, user_member.first_name)}")
 
         if chat.type != 'private':
             log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
 
         return log_message
     else:
-        message.reply_text("This user is not a whitelist!")
+        message.reply_text("Bu istifadəçi ağ siyahıda deyil!")
         return ""
 
 
 @run_async
 @whitelist_plus
 def whitelistlist(bot: Bot, update: Update):
-    reply = "<b>Whitelist User🤍:</b>\n"
+    reply = "<b>Ağ siyahıdakı istifadəçilər🤍:</b>\n"
     for each_user in WHITELIST_USERS:
         user_id = int(each_user)
         try:
@@ -326,7 +326,7 @@ def whitelistlist(bot: Bot, update: Update):
 @run_async
 @whitelist_plus
 def supportlist(bot: Bot, update: Update):
-    reply = "<b>Support List🧡:</b>\n"
+    reply = "<b>Support Siyahısı🧡:</b>\n"
     for each_user in SUPPORT_USERS:
         user_id = int(each_user)
         try:
@@ -341,7 +341,7 @@ def supportlist(bot: Bot, update: Update):
 @whitelist_plus
 def sudolist(bot: Bot, update: Update):
     true_sudo = list(set(SUDO_USERS) - set(DEV_USERS))
-    reply = "<b>Sudo List❤:</b>\n"
+    reply = "<b>Sudo siyahısı❤:</b>\n"
     for each_user in true_sudo:
         user_id = int(each_user)
         try:
@@ -356,7 +356,7 @@ def sudolist(bot: Bot, update: Update):
 @whitelist_plus
 def devlist(bot: Bot, update: Update):
     true_dev = list(set(DEV_USERS) - {OWNER_ID})
-    reply = "<b>My Developer List🤎:</b>\n"
+    reply = "<b>My Developer Siyahısı🤎:</b>\n"
     for each_user in true_dev:
         user_id = int(each_user)
         try:
@@ -368,22 +368,22 @@ def devlist(bot: Bot, update: Update):
 
 
 __help__ = """
-*Bot Owner only:*
+*Yalnız Bot Sahibi:*
 
- • /addsudo: promotes the user to Sudo User
- • /removesudo: demotes the user from Sudo User
+ • /addsudo: istifadəçini Sudo İstifadəçisi səviyyəsinə yüksəldir
+ • /removesudo: istifadəçini Sudo İstifadəçisindən aşağı salır
 
- • /addsupport: promotes the user to Support User
- • /removesupport: demotes the user from Support User
+ • /addsupport: istifadəçini dəstəkləyən istifadəçiyə təqdim edir
+ • /removesupport: istifadəçini dəstək istifadəçisindən aşağı salır
 
- • /addwhitelist: promotes the user to Whitelist User
- • /removewhitelist: demotes the user from Whitelist User
+ • /addwhitelist: istifadəçini ağ siyahıya gətirir
+ • /removewhitelist: istifadəçini Ağ Siyahı İstifadəçisindən aşağı salır
  
  *Bot Admin Lists:*
- • /whitelistlist - List whitelisted users.
- • /supportlist - List support users.
- • /sudolist - List sudo users.
- • /devlist - List dev users.
+ • /whitelistlist - Ağ siyahıya alınan istifadəçiləri siyahıya alın.
+ • /supportlist - Support istifadəçilərini siyahıya alın.
+ • /sudolist - Sudo istifadəçilərini siyahıya alın.
+ • /devlist - DEV istifadəçilərini siyahıya alın.
 """
 
 SUDO_HANDLER = CommandHandler(("addsudo"), addsudo, pass_args=True)
