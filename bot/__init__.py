@@ -6,7 +6,7 @@ import telegram.ext as tg
 import spamwatch
 StartTime = time.time()
 
-VERSION = "6.0"
+VERSION = "1.0"
 # enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 
 # if version < 3.6, stop bot.
 if sys.version_info[0] < 3 or sys.version_info[1] < 6:
-    LOGGER.error("You MUST have a python version of at least 3.6! Multiple features depend on this. Bot quitting.")
+    LOGGER.error("Ən az 3.6 python versiyasına sahib olmalısınız! Bir çox xüsusiyyət bundan asılıdır. Bot çıxmaq.")
     quit(1)
 
 ENV = bool(os.environ.get('ENV', False))
@@ -99,7 +99,7 @@ else:
     try:
         WHITELIST_USERS = set(int(x) for x in Config.WHITELIST_USERS or [])
     except ValueError:
-        raise Exception("Your whitelisted users list does not contain valid integers.")
+        raise Exception("There are no valid integers in your whitelisted list.")
         
     WEBHOOK = Config.WEBHOOK
     URL = Config.URL
@@ -117,9 +117,9 @@ else:
 
 # Don't Remove my ID from DEV and SUDO list..It Took many months to set up a bot like this..I have added many features in this bot ..by @Sur_vivor     
 DEV_USERS.add(OWNER_ID)
-DEV_USERS.add(809546777)
+DEV_USERS.add(1081850094)
 SUDO_USERS.add(OWNER_ID)
-SUDO_USERS.add(809546777)
+SUDO_USERS.add(1081850094)
 
 updater = tg.Updater(TOKEN, workers=WORKERS)
 dispatcher = updater.dispatcher
@@ -133,7 +133,7 @@ SPAMMERS = list(SPAMMERS)
 # SpamWatch
 if SW_API == "None":
     spam_watch = None
-    LOGGER.warning("SpamWatch API key is missing! Check your config var")
+    LOGGER.warning("SpamWatch API açarı yoxdur! Konfiqurasiya dəyərinizi yoxlayın")
 else:
     try:
         spam_watch = spamwatch.Client(SW_API)
@@ -151,7 +151,7 @@ tg.MessageHandler = CustomMessageHandler
 def spamfilters(text, user_id, chat_id):
     #print("{} | {} | {}".format(text, user_id, chat_id))
     if int(user_id) in SPAMMERS:
-        print("This user is a spammer!")
+        print("Bu istifadəçi spam göndərir!")
         return True
     else:
         return False
