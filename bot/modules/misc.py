@@ -57,10 +57,10 @@ def quickunban(bot: Bot, update: Update, args: List[int]):
         chat_id = str(args[1])
         to_kick = str(args[0])
     else:
-        update.effective_message.reply_text("You don't seem to be referring to a chat/user")
+        update.effective_message.reply_text("Görünür, söhbət/istifadəçi haqqında danışmırsınız")
     try:
         bot.unban_chat_member(chat_id, to_kick)
-        update.effective_message.reply_text("Attempted unbanning " + to_kick + " from" + chat_id)
+        update.effective_message.reply_text("Qadağan edilməməyə cəhd edildi " + to_kick + " from" + chat_id)
     except BadRequest as excp:
         update.effective_message.reply_text(excp.message + " " + to_kick)
 
@@ -71,14 +71,14 @@ def snipe(bot: Bot, update: Update, args: List[str]):
         chat_id = str(args[0])
         del args[0]
     except TypeError as excp:
-        update.effective_message.reply_text("Please give me a chat to echo to!")
+        update.effective_message.reply_text("Xahiş edirəm mənə əks-səda vermək üçün bir söhbət verin!")
     to_send = " ".join(args)
     if len(to_send) >= 2:
         try:
             bot.sendMessage(int(chat_id), str(to_send))
         except TelegramError:
-            LOGGER.warning("Couldn't send to group %s", str(chat_id))
-            update.effective_message.reply_text("Couldn't send the message. Perhaps I'm not part of that group?")
+            LOGGER.warning("%s qrupuna göndərilə bilmədi", str(chat_id))
+            update.effective_message.reply_text("Mesaj göndərilə bilmədi. Bəlkə də mən o qrupun üzvü deyiləm?")
 
 
 
@@ -87,7 +87,7 @@ def leavechat(bot: Bot, update: Update, args: List[int]):
     if args:
         chat_id = int(args[0])
     else:
-        update.effective_message.reply_text("You do not seem to be referring to a chat!Send a valid chat ID")
+        update.effective_message.reply_text("Görünür söhbətə istinad etmirsiniz! Etibarlı bir chat ID göndərin")
     try:
         chat = bot.getChat(chat_id)
         titlechat = bot.get_chat(chat_id).title
@@ -96,16 +96,16 @@ def leavechat(bot: Bot, update: Update, args: List[int]):
         update.effective_message.reply_text("I left group {}".format(titlechat))
 
     except BadRequest as excp:
-        if excp.message == "Chat not found":
-            update.effective_message.reply_text("It looks like I've been kicked out of the group :p")
+        if excp.message == "Çat tapılmadı":
+            update.effective_message.reply_text("Görünür məni qrupdan qovdular 🙄🤭😂 ")
         else:
             return
 
 @run_async
 def slist(bot: Bot, update: Update):
     message = update.effective_message
-    text1 = "My Sudo Users are❤:"
-    text2 = "My Support Users are🤍:"
+    text1 = "Sudo istifadəçilərim❤:"
+    text2 = "Dəstək İstifadəçilərim🤍:"
     for user_id in SUDO_USERS:
         try:
             user = bot.get_chat(user_id)
@@ -114,7 +114,7 @@ def slist(bot: Bot, update: Update):
                 name = escape_html("@" + user.username)
             text1 += "\n - `{}`".format(name)
         except BadRequest as excp:
-            if excp.message == 'Chat not found':
+            if excp.message == 'Çat tapılmadı':
                 text1 += "\n - ({}) - not found".format(user_id)
     for user_id in SUPPORT_USERS:
         try:
@@ -124,33 +124,33 @@ def slist(bot: Bot, update: Update):
                 name = escape_html("@" + user.username)
             text2 += "\n - `{}`".format(name)
         except BadRequest as excp:
-            if excp.message == 'Chat not found':
+            if excp.message == 'Çat tapılmadı':
                 text2 += "\n - ({}) - not found".format(user_id)
     message.reply_text(text1 + "\n", parse_mode=ParseMode.MARKDOWN)
     message.reply_text(text2 + "\n", parse_mode=ParseMode.MARKDOWN)
 
 MARKDOWN_HELP = f"""
-Markdown is a very powerful formatting tool supported by telegram. {dispatcher.bot.first_name} has some enhancements, to make sure that \
-saved messages are correctly parsed, and to allow you to create buttons.
+Markdown, telegram tərəfindən dəstəklənən çox güclü bir formatlama vasitəsidir. {dispatcher.bot.first_name} əmin olmaq üçün bəzi inkişaflara malikdir \
+qeyd edilmiş mesajlar düzgün təhlil olunur və düymələr yaratmağınıza imkan verir.
 
-- <code>_italic_</code>: wrapping text with '_' will produce italic text
-- <code>*bold*</code>: wrapping text with '*' will produce bold text
-- <code>`code`</code>: wrapping text with '`' will produce monospaced text, also known as 'code'
-- <code>[sometext](someURL)</code>: this will create a link - the message will just show <code>sometext</code>, \
-and tapping on it will open the page at <code>someURL</code>.
-EG: <code>[test](example.com)</code>
+- <code>_italic_</code>: mətni '_' ilə bağlamaq italik mətn çıxaracaqdır
+- <code>*bold*</code>: mətni '*' ilə bağlamaq qalın mətn çıxaracaqdır
+- <code>`code`</code>: mətni '' 'ilə bağlamaq, kod tipli mətn meydana gətirəcəkdir 'code'
+- <code>[bir mətn](bir URL)</code>: bu bir link yaradacaq - mesaj yalnız göstəriləcək <code>sometext</code>, \
+və üzərinə vurduqda linkdəki səhifəni açacaqdır <code>someURL</code>.
+NÜMUNƏ: <code>[yoxlama](example.com)</code>
 
-- <code>[buttontext](buttonurl:someURL)</code>: this is a special enhancement to allow users to have telegram \
-buttons in their markdown. <code>buttontext</code> will be what is displayed on the button, and <code>someurl</code> \
-will be the url which is opened.
-EG: <code>[This is a button](buttonurl:example.com)</code>
+- <code>[düymə mətni](düymə linki:bir URL)</code>: bu, istifadəçilərin bir teleqrama sahib olmasına imkan verən xüsusi bir inkişafdır \
+işarələrindəki düymələr. <code>düyməmətni</code> düymədə görünən olacaq və <code>bir URL</code> \
+olacaq.
+Nümunə: <code>[Bu bir düymədir](buttonurl:example.com)</code>
 
-If you want multiple buttons on the same line, use :same, as such:
+Eyni sətirdə birdən çox düymə istəsən, istifadə edin: eyni, olduğu kimi:
 <code>[one](buttonurl://example.com)
 [two](buttonurl://google.com:same)</code>
-This will create two buttons on a single line, instead of one button per line.
+Bu, hər sətirdə bir düymə əvəzinə bir sətirdə iki düymə yaradacaqdır.
 
-Keep in mind that your message <b>MUST</b> contain some text other than just a button!
+Unutmayın ki, mesajınız <b>DÜŞMƏLİDİR</b> yalnız bir düymədən başqa bəzi mətnlər ehtiva edir!
 """
 
 
@@ -168,26 +168,26 @@ def get_id(bot: Bot, update: Update, args: List[str]):
             user1 = message.reply_to_message.from_user
             user2 = message.reply_to_message.forward_from
 
-            msg.reply_text(f"The original sender, {html.escape(user2.first_name)},"
-                           f" has an ID of <code>{user2.id}</code>.\n"
-                           f"The forwarder, {html.escape(user1.first_name)},"
-                           f" has an ID of <code>{user1.id}</code>.",
+            msg.reply_text(f"Orijinal göndərən, {html.escape(user2.first_name)},"
+                           f" ID-si var <code>{user2.id}</code>.\n"
+                           f"Ekspeditor, {html.escape(user1.first_name)},"
+                           f"ID-si var <code>{user1.id}</code>.",
                            parse_mode=ParseMode.HTML)
 
         else:
 
             user = bot.get_chat(user_id)
-            msg.reply_text(f"{html.escape(user.first_name)}'s id is <code>{user.id}</code>.",
+            msg.reply_text(f"{html.escape(user.first_name)}'eynidir <code>{user.id}</code>.",
                            parse_mode=ParseMode.HTML)
 
     else:
 
         if chat.type == "private":
-            msg.reply_text(f"Your id is <code>{chat.id}</code>.",
+            msg.reply_text(f"Sizin ID-iniz <code>{chat.id}</code>.",
                            parse_mode=ParseMode.HTML)
 
         else:
-            msg.reply_text(f"This group's id is <code>{chat.id}</code>.",
+            msg.reply_text(f"Bu qrupun ID-si <code>{chat.id}</code>.",
                            parse_mode=ParseMode.HTML)
 
 
@@ -198,7 +198,7 @@ def gifid(bot: Bot, update: Update):
         update.effective_message.reply_text(f"Gif ID:\n<code>{msg.reply_to_message.animation.file_id}</code>",
                                             parse_mode=ParseMode.HTML)
     else:
-        update.effective_message.reply_text("Please reply to a gif to get its ID.")
+        update.effective_message.reply_text("Xahiş edirəm ID-sini almaq üçün gif-ə cavab verin.")
 
 @run_async
 @user_admin
@@ -217,8 +217,8 @@ def echo(bot: Bot, update: Update):
 @run_async
 def markdown_help(bot: Bot, update: Update):
     update.effective_message.reply_text(MARKDOWN_HELP, parse_mode=ParseMode.HTML)
-    update.effective_message.reply_text("Try forwarding the following message to me, and you'll see!")
-    update.effective_message.reply_text("/save test This is a markdown test. _italics_, *bold*, `code`, "
+    update.effective_message.reply_text("Aşağıdakı mesajı mənə ötürməyə çalışın, baxın!")
+    update.effective_message.reply_text("/save test Bu bir qeyd testidir. _italik_, *qalın*, `code`, "
                                         "[URL](example.com) [button](buttonurl:github.com) "
                                         "[button2](buttonurl://google.com:same)")
 
@@ -226,18 +226,18 @@ def markdown_help(bot: Bot, update: Update):
 @run_async
 @sudo_plus
 def stats(bot: Bot, update: Update):
-    stats = "Current Bot Stats\n" + "\n".join([mod.__stats__() for mod in STATS])
+    stats = "Hazırkı Bot Statistikaları\n" + "\n".join([mod.__stats__() for mod in STATS])
     result = re.sub(r'(\d+)', r'<code>\1</code>', stats)
     update.effective_message.reply_text(result, parse_mode=ParseMode.HTML)
 
 
 __help__ = """
- • /id: get the current group id. If used by replying to a message, gets that user's id.
- • /info: get information about a user.
-**Sudo/owner only:**
-• /Stats: check bot's stats
+ • /id: cari qrup ID-sini əldə edin. Bir mesajı cavablandırmaqla istifadə edilərsə, istifadəçinin ID-sini alır.
+ • /info: bir istifadəçi haqqında məlumat əldə edin.
+**Sudo/sahib:**
+• /Stats: botun statistikasını yoxlayın
 **Users:**
-• /slist Gives a list of sudo and support users
+• /slist Sudo və dəstək istifadəçilərinin siyahısını verir
 """
 
 ID_HANDLER = DisableAbleCommandHandler("id", get_id, pass_args=True)
@@ -267,6 +267,6 @@ dispatcher.add_handler(ECHO_HANDLER)
 dispatcher.add_handler(MD_HELP_HANDLER)
 dispatcher.add_handler(STATS_HANDLER)
 
-__mod_name__ = "Others"
+__mod_name__ = "Digərləri"
 __command_list__ = ["id", "echo"]
 __handlers__ = [ID_HANDLER, ECHO_HANDLER, MD_HELP_HANDLER, STATS_HANDLER]
