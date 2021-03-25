@@ -14,14 +14,14 @@ def __list_all_modules():
         to_load = LOAD
         if to_load:
             if not all(any(mod == module_name for module_name in all_modules) for mod in to_load):
-                LOGGER.error("Invalid loadorder names. Quitting.")
+                LOGGER.error("Yanlış yükləyici adları. Çıxmaq.")
                 quit(1)
 
         else:
             to_load = all_modules
 
         if NO_LOAD:
-            LOGGER.info("Not loading: {}".format(NO_LOAD))
+            LOGGER.info("Yüklənmir: {}".format(NO_LOAD))
             return [item for item in to_load if item not in NO_LOAD]
 
         return to_load
@@ -30,5 +30,5 @@ def __list_all_modules():
 
 
 ALL_MODULES = sorted(__list_all_modules())
-LOGGER.info("Modules to load: %s", str(ALL_MODULES))
+LOGGER.info("Yüklənəcək modullar: %s", str(ALL_MODULES))
 __all__ = ALL_MODULES + ["ALL_MODULES"]
