@@ -321,13 +321,11 @@ __help__ = """
  • /filters: list all active filters in this chat.
 
 *Admin only:*
- • /filter <keyword> <reply message>: add a filter to this chat. The bot will now reply that message whenever 'keyword'\
-is mentioned. If you reply to a sticker with a keyword, the bot will reply with that sticker. NOTE: all filter \
-keywords are in lowercase. If you want your keyword to be a sentence, use quotes. eg: /filter "hey there" How you \
-doin?
- • /stop <filter keyword>: stop that filter.
- • /stopall: stop all filters
-
+ • /filter <açar söz> <cavab mesajı>: bu söhbətə bir filtr əlavə edin. İndi bot 'açar söz' \ olduqda həmin mesajı cavablandıracaq \
+.bir açar söz ilə bir stikerə cavab verdiyiniz halda, bot bu stikerlə cavab verəcəkdir. QEYD: all filter \
+açar sözlər kiçikdir. Açar sözünüzün bir cümlə olmasını istəyirsinizsə, sitatlardan istifadə edin. məs: /filter "Salam necəsən" yaxşıyam sən necəsən?
+ • /stop <filtr açar sözü>: bu filtri dayandırın.
+ • /stopall: Bütün filterləri dayandırır
 """
 
 __mod_name__ = "Filter"
