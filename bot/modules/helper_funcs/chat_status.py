@@ -78,7 +78,7 @@ def dev_plus(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             update.effective_message.delete()
         else:
-            update.effective_message.reply_text("This is a developer restricted command. You do not have permissions to run this.")
+            update.effective_message.reply_text("Bu, Qurucum tərəfindən məhdudlaşdırılmış bir əmrdir. Bunu çalışdırmaq üçün icazəniz yoxdur.")
 
     return is_dev_plus_func
     
@@ -97,7 +97,7 @@ def sudo_plus(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             update.effective_message.delete()
         else:
-            update.effective_message.reply_text("Who dis non-admin telling me what to do?")
+            update.effective_message.reply_text("Admin olmayan biri mənə nə edəcəyimi söyləyir?")
 
     return is_sudo_plus_func
 
@@ -127,7 +127,7 @@ def whitelist_plus(func):
         if user and is_whitelist_plus(chat, user.id):
             return func(bot, update, *args, **kwargs)
         else:
-            update.effective_message.reply_text("You don't have access to use this.")
+            update.effective_message.reply_text("Bunu istifadə etmək üçün icazəniz yoxdur.")
 
     return is_whitelist_plus_func
 
@@ -146,7 +146,7 @@ def user_admin(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             update.effective_message.delete()
         else:
-            update.effective_message.reply_text("You don't have access to use this.")
+            update.effective_message.reply_text("Bunu istifadə etmək üçün icazəniz yoxdur.")
 
     return is_admin
 
@@ -192,9 +192,9 @@ def bot_admin(func):
         message_chat_title = update.effective_message.chat.title
 
         if update_chat_title == message_chat_title:
-            not_admin = "I'm not admin! "
+            not_admin = "Mən admin deyiləm! "
         else:
-            not_admin = f"I'm not admin in <b>{update_chat_title}</b>! "
+            not_admin = f"<b>{update_chat_title}</b> administratoru deyiləm! "
 
         if is_bot_admin(chat, bot.id):
             return func(bot, update, *args, **kwargs)
@@ -213,9 +213,9 @@ def bot_can_delete(func):
         message_chat_title = update.effective_message.chat.title
 
         if update_chat_title == message_chat_title:
-            cant_delete = f"I can't delete messages here!\nMake sure I'm admin and can delete other user's messages."
+            cant_delete = f"Buradakı mesajları silə bilmirəm!\nAdmin olduğumu və digər istifadəçinin mesajlarını silə biləcəyinimə əmin olun."
         else:
-            cant_delete = f"I can't delete messages in <b>{update_chat_title}</b>!\nMake sure I'm admin and can delete other user's messages there."
+            cant_delete = f"<b>{update_chat_title}</b> içindəki mesajları silə bilmirəm!\nAdmin olduğumdan əmin olun və digər istifadəçinin mesajlarını orada silə bilərəm."
 
         if can_delete(chat, bot.id):
             return func(bot, update, *args, **kwargs)
@@ -234,9 +234,9 @@ def can_pin(func):
         message_chat_title = update.effective_message.chat.title
 
         if update_chat_title == message_chat_title:
-            cant_pin = f"I can't pin messages here!\nMake sure I'm admin and can pin messages."
+            cant_pin = f"Mesajları buraya bağlaya bilmirəm!\nMənim admin olduğumu və mesajları bağlaya biləcəyinimə əmin olun."
         else:
-            cant_pin = f"I can't pin messages in <b>{update_chat_title}</b>!\nMake sure I'm admin and can pin messages there."
+            cant_pin = f"Mesajları <b>{update_chat_title}</b> içərisində bağlaya bilmirəm!\nAdmin olduğumdan və mesajları orada bağlaya bildiyimdən əmin olun."
 
         if chat.get_member(bot.id).can_pin_messages:
             return func(bot, update, *args, **kwargs)
@@ -255,9 +255,9 @@ def can_promote(func):
         message_chat_title = update.effective_message.chat.title
 
         if update_chat_title == message_chat_title:
-            cant_promote = f"I can't promote/demote people here!\nMake sure I'm admin and can appoint new admins."
+            cant_promote = f"İnsanları burada idarəçi edə/vəzifədən ala bilmirəm!\nMənim admin olduğumu və yeni admin təyin edə biləcəyimdən əmin olun."
         else:
-            cant_promote = f"I can't promote/demote people in <b>{update_chat_title}</b>!\nMake sure I'm admin there and can appoint new admins."
+            cant_promote = f"<b>{update_chat_title}</b> içərisində insanları idarəçi edə və ya idarçiliyini ala bilmirəm!."
         
         if chat.get_member(bot.id).can_promote_members:
             return func(bot, update, *args, **kwargs)
@@ -276,9 +276,9 @@ def can_restrict(func):
         message_chat_title = update.effective_message.chat.title
 
         if update_chat_title == message_chat_title:
-            cant_restrict = f"I can't restrict people here!\nMake sure I'm admin and can restrict users."
+            cant_restrict = f"Buradakı insanları məhdudlaşdıra bilmərəm!\nMənim admin olduğumu və istifadəçiləri məhdudlaşdırdığına əmin olun."
         else:
-            cant_restrict = f"I can't restrict people in <b>{update_chat_title}</b>!\nMake sure I'm admin there and can restrict users."
+            cant_restrict = f"Mən insanları məhdudlaşdıra bilmərəm <b>{update_chat_title}</b>!\nƏmin olun ki, mən orada adminəm və istifadəçiləri məhdudlaşdıra bilərəm."
 
         if chat.get_member(bot.id).can_restrict_members:
             return func(bot, update, *args, **kwargs)
@@ -300,7 +300,7 @@ def connection_status(func):
             return func(bot, update, *args, **kwargs)
         else:
             if update.effective_message.chat.type == "private":
-                update.effective_message.reply_text("Send /connect in a group that you and I have in common first.")
+                update.effective_message.reply_text("Sizinlə mənim ortaq olduğumuz bir qrupa göndərin əvvəlcə /connect.")
                 return connected_status
 
             return func(bot, update, *args, **kwargs)
