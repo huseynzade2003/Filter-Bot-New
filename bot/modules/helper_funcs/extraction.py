@@ -39,7 +39,7 @@ def extract_user_and_text(message: Message, args: List[str]) -> (Optional[int], 
     else:
         ent = None
 
-    # if entity offset matches (command end/text start) then all good
+    # if entity offset matches (komanda sonu/mətn başlanğıcı) then all good
     if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
@@ -49,8 +49,8 @@ def extract_user_and_text(message: Message, args: List[str]) -> (Optional[int], 
         user = args[0]
         user_id = get_user_id(user)
         if not user_id:
-            message.reply_text("No idea who this user is. You'll be able to interact with them if "
-                               "you reply to that person's message instead, or forward one of that user's messages.")
+            message.reply_text("Bu istifadəçinin kim olduğu barədə heç bir məlumat yoxdur. Onlarla əlaqə qura biləcəksiniz "
+                               "bunun əvəzinə həmin şəxsin mesajına cavab verirsiniz və ya həmin istifadəçinin mesajlarından birini ötürürsünüz.")
             return None, None
 
         else:
@@ -74,12 +74,12 @@ def extract_user_and_text(message: Message, args: List[str]) -> (Optional[int], 
     try:
         message.bot.get_chat(user_id)
     except BadRequest as excp:
-        if excp.message in ("User_id_invalid", "Chat not found"):
-            message.reply_text("I don't seem to have interacted with this user before - please forward a message from "
-                               "them to give me control! (like a voodoo doll, I need a piece of them to be able "
-                               "to execute certain commands...)")
+        if excp.message in ("User_id_invalid", "Çat tapılmadı"):
+            message.reply_text("Görünür əvvəllər bu istifadəçi ilə əlaqə qurmamışam - xahiş edirəm bir mesaj göndərin "
+                               "mənə nəzarəti versinlər! (vudu kuklası kimi, bacarmaq üçün onlardan bir parça lazımdır) "
+                               "müəyyən əmrləri yerinə yetirmək...)")
         else:
-            LOGGER.exception("Exception %s on user %s", excp.message, user_id)
+            LOGGER.exception("İstisna %s istifadəçi üzərində %s", excp.message, user_id)
 
         return None, None
 
@@ -107,7 +107,7 @@ def extract_unt_fedban(message: Message, args: List[str]) -> (Optional[int], Opt
     else:
         ent = None
         
-    # if entity offset matches (command end/text start) then all good
+    # if entity offset matches (komanda sonu/mətn başlanğıcı) then all good
     if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
@@ -117,9 +117,9 @@ def extract_unt_fedban(message: Message, args: List[str]) -> (Optional[int], Opt
         user = args[0]
         user_id = get_user_id(user)
         if not user_id and not str(user_id).isdigit():
-            message.reply_text("I don't seem to have interacted with this user before - please forward a message from "
-                               "them to give me control! (like a voodoo doll, I need a piece of them to be able "
-                               "to execute certain commands...)")
+            message.reply_text("Görünür əvvəllər bu istifadəçi ilə əlaqə qurmamışam - xahiş edirəm bir mesaj göndərin "
+                               "mənə nəzarəti versinlər! (vudu kuklası kimi, bacarmaq üçün onlardan bir parça lazımdır) "
+                               "müəyyən əmrləri yerinə yetirmək...)")
             return None, None
 
         else:
@@ -143,13 +143,13 @@ def extract_unt_fedban(message: Message, args: List[str]) -> (Optional[int], Opt
     try:
         message.bot.get_chat(user_id)
     except BadRequest as excp:
-        if excp.message in ("User_id_invalid", "Chat not found") and not str(user_id).isdigit():
-            message.reply_text("I don't seem to have interacted with this user before - please forward messages from"
-                               "them to give me control! (Like a voodoo doll, I need a piece to be able to"
-                               "to execute certain commands ...)")
+        if excp.message in ("User_id_invalid", "Çat tapılmadı") and not str(user_id).isdigit():
+            message.reply_text("Bu istifadəçi ilə əvvəllər qarşılıqlı əlaqədə olmadığımı düşünürəm - xahiş edirəm mesaj göndərin"
+                               "mənə nəzarəti versinlər! (Vudu kuklası kimi, bacarmaq üçün bir parçaya ehtiyacım var"
+                               "müəyyən əmrləri yerinə yetirmək ...)")
             return None, None
         elif excp.message != "Chat not found":
-            LOGGER.exception("Exception %s on user %s", excp.message, user_id)
+            LOGGER.exception("Istifadəçi %s istisna %s", excp.message, user_id)
             return None, None
         elif not str(user_id).isdigit():
             return None, None
