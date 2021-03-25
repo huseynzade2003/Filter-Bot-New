@@ -136,7 +136,7 @@ def connect_chat(bot: Bot, update: Update, args: List[str]):
             if gethistory:
                 text += "\n\n*Connection History:*\n"
                 text += "╒═══「 *Məlumat* 」\n"
-                text += "│  Çeşidləndi: "Ən yeni`\n"
+                text += "│  Çeşidləndi: Ən yeni`\n"
                 text += "│\n"
                 buttons = [buttons]
                 for x in sorted(gethistory.keys(), reverse=True):
