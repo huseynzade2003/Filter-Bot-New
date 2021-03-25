@@ -220,7 +220,7 @@ if is_module_loaded(FILENAME):
 
             if failed_enabled_cmds:
                 failed_enabled_cmds_string = ", ".join(failed_enabled_cmds)
-                update.effective_message.reply_text(f"Onlar "{fail_enabled_cmds_string}" əmri alınmadı?",
+                update.effective_message.reply_text(f"Onlar `{fail_enabled_cmds_string}` əmri alınmadı?",
                                                     parse_mode=ParseMode.MARKDOWN)
 
         else:
